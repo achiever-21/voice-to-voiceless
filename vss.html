@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice to Text</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        #output {
+            font-size: 1.5em;
+            margin-top: 20px;
+            text-align: center;
+        }
+        #startBtn {
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Voice to Text Conversion</h1>
+    <button id="startBtn">Start Listening</button>
+    <div id="output"></div>
+
+    <script>
+        const startBtn = document.getElementById('startBtn');
+        const outputDiv = document.getElementById('output');
+
+        const recognition = new webkitSpeechRecognition() || speechRecognition;
+
+        recognition.lang = 'en-US';
+        recognition.continuous = true;
+        recognition.interimResults = true;
+
+        startBtn.addEventListener('click', () => {
+            recognition.start();
+        });
+
+        recognition.onresult = (event) => {
+            const transcript = event.results[event.results.length - 1][0].transcript;
+            outputDiv.textContent = transcript;
+        };
+
+        recognition.onend = () => {
+            startBtn.innerText = 'Start Listening';
+        };
+
+        recognition.onstart = () => {
+            startBtn.innerText = 'Listening...';
+        };
+    </script>
+</body>
+</html>
